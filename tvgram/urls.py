@@ -23,6 +23,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('list/', views.list, name='list'),
     path('detail/<int:show_id>/', views.detail, name='detail'),
+    path('register/', views.user_register, name="register"),
+    path('login/', views.user_login, name="login"),
+    path('logout/', views.user_logout, name="logout"),
+    path('update/<int:show_id>/', views.update, name="update"),
+    path('delete/<int:show_id>/', views.delete, name='delete'),
+    path('like/<int:show_id>/', views.like, name='like'),
+    path('create/', views.create, name="create"),
+    path('following/<int:user_id>/', views.following, name='following'),
+
 ]
 
 

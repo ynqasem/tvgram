@@ -1,20 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-{% for item in show_obj %}
+{% extends "base.html" %}
+{% block name_me %}
+Tv home feed
+{% endblock name_me %}
+
+{% block stuff %}
+<br>
+<form action="{% url 'list' %}" method="GET">
+	<div class="input-group mb-3">
+		<input type="text" class="form-control" placeholder="Search for a show..." aria-label="Search" name="q">
+		<div class="input-group-append">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			{# <input type="submit" class="input-group-text" value="Search"> #}
+		</div>
+	</div>
+</form>
 
 
-{{item.name}}
+<div class="row">
+<div class="card-columns">
+	{% for item in shows %}
+	<div class="card">
+			{% if item.image %}
+				<img class="card-img-top" src="{{item.image.url}}" alt="Card image cap">
+			{% endif %}
+			<div class="card-body">
+				<a href="{% url 'detail' show_id=item.id %}">
+					<button type="button" class="btn btn-primary btn-lg btn-block"><h5 class="card-title">{{item.name}}</h5></button>
+				</a>
+					<button type="button" class="btn btn-secondary btn-lg btn-block"><p class="card-text">{{item.description}}</p></button>
+					<p class="card-text"><small class="text-muted">Opening time: {{item.rating}}</small></p>
+					<p class="card-text"><small class="text-muted">Publish date: {{item.publish_date}}</small></p>
 
-{{item.description}}
 
-{{item.rating}}
+					<button class="btn btn-secondary" onclick="somefunction({{item.id}})">
+						<span id="heart-number-{{item.id}}">{{item.like_set.count}}</span>
+						<i id="heart-color-{{item.id}}" class="fas fa-heart {% if item in my_likes %}text-danger{% endif %}"></i>
 
-{{item.name}}
 
-{% endfor %}
-</body>
-</html>
+					</button>
+					<a href="{% url 'delete' show_id=item.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
+					<a href="{% url 'update' show_id=item.id %}"><button type="button" class="btn btn-warning">Update</button></a>
+
+					
+				</div>
+			</div>
+			
+			{% endfor %}
+		</div>
+	</div>
+
+<script>
+
+	function somefunction(id){
+		$.ajax({
+			type:"GET",
+			url:"/like/"+id,
+			error:function(){
+				console.log("You failed to do it.")
+			},
+			success: function(data){
+				console.log(data);
+				$("#heart-number-"+id).text(data.count);
+				if(data.action==="like"){
+					$("#heart-color-"+id).addClass("text-danger");
+				}
+				else{
+					$("#heart-color-"+id).removeClass("text-danger");
+				}
+			}
+		})
+	}
+</script>
+{% endblock stuff %}
+
+
