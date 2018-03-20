@@ -3,9 +3,38 @@ from django.http import HttpResponse, JsonResponse
 from .forms import ShowForm, UserRegisterForm, LoginForm, ProfileForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from .models import Show, Like
+from .models import Show, Like, Profile, Following, Followers, Posts
+
+def profile(request, profile_id):
+	profile_obj = Profile.objects.get(id=profile_id)
+	# items = Item.objects.filter(restaurant=profile_obj)
+	context = {
+	"profile_obj": profile_obj,
+	# "items": items
+
+	}
 
 
+	return render(request, 'profile.html', context)
+
+def following(request, user_id):
+	following_list = User.objects.get(id=user_id)
+
+	following_obj, created = User.objects.get_or_create(user=request.user, followed_user=following_list)
+
+	if created:
+		action="follow"
+	else:
+		action="unfollow"
+		following_obj.delete()
+
+	following_count = following_list.following_set.all().count()
+
+	context = {
+	"action": action,
+	"count": following_count
+	}
+	return JsonResponse(context, safe=False)
 
 
 def like(request, show_id):
@@ -74,12 +103,14 @@ def list(request):
 		object_list = object_list.filter(name__contains=query)
 
 	liked_shows = []
+	following_list = []
 	likes = request.user.like_set.all()
 	for like in likes:
 		liked_shows.append(like.show)
 	context = {
 	"shows": object_list,
 	"my_likes": liked_shows,
+	"my_following": following_list,
 
 	}
 	return render(request, 'list.html', context)
@@ -143,22 +174,4 @@ def create(request):
 	return render(request, 'create.html', context)
 
 
-def following(request, user_id):
-	following_list = Following.objects.get(id=user_id)
-
-	following_obj, created = Following.objects.get_or_create(user=request.user, show=following_list)
-
-	if created:
-		action="follow"
-	else:
-		action="unfollow"
-		following_obj.delete()
-
-	following_count = following_list.following_set.all().count()
-
-	context = {
-	"action": action,
-	"count": following_count
-	}
-	return JsonResponse(context, safe=False)
 

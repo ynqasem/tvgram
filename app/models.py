@@ -32,10 +32,11 @@ class Profile(models.Model):
 
 
 class Following(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	user = models.ForeignKey(User,related_name="followers", on_delete=models.CASCADE)
+	followed_user = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)
 
 class Followers(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	user = models.ForeignKey(User,related_name="followers2", on_delete=models.CASCADE)
 
 class Posts(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
