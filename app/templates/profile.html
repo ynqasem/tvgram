@@ -7,21 +7,22 @@
 {% block stuff %}
 	<a href="{% url 'list' %}">
 	<p>
-		Return to timeline shows list
+		Return to the feed page
 	</p>
 	</a>
 
 	<div class="card" style="width: 18rem;">
-			{% if show_obj.image %}
-				<img class="card-img-top" src="{{show_obj.image.url}}" alt="Card image cap">
+			{% if profile_obj.image %}
+				<img class="card-img-top" src="{{profile_obj.image.url}}" alt="Card image cap">
 			{% endif %}
   	<div class="card-body">
-    <h5 class="card-title">Name: {{show_obj.name}}</h5>
-    <p class="card-text">Description: {{show_obj.description}}</p>
-    <p class="card-text"> User: {{show_obj.username}}</p>
-    <p class="card-text">Published: {{show_obj.publish_date}}</p>
-    <p class="card-text">Rating: (5/{{show_obj.rating}})</p>
-    <a href="#" class="btn btn-primary">Go to user's profile</a>
+    <h5 class="card-title">Username: {{profile_obj.username}}</h5>
+    <p class="card-text">First name: {{profile_obj.first_name}}</p>
+    <p class="card-text">Last name: {{profile_obj.last_name}}</p>
+    <p class="card-text">Date of Birth: {{profile_obj.dob}}</p>
+    <p class="card-text">About: {{profile_obj.about}}</p>
+   
+    <a href="{% url 'edit_profile' profile_id=profile_obj.id %}" class="btn btn-primary">Edit your profile</a>
   	</div>
 	</div>
 
@@ -29,6 +30,8 @@
 	<br>
 
 	<p> other shows by this user:</p>
+
+  
 
 {# <ul class="list-group">
 	{% for item in items %}

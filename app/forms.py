@@ -22,7 +22,7 @@ class ShowForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ['first_name', 'last_name', 'about', 'profile_img', 'dob']
+		fields = ['first_name', 'last_name', 'about', 'image', 'dob']
 		
 		widgets = {
 			"dob": forms.DateInput(attrs={"type":"date"})

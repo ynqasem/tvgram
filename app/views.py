@@ -90,14 +90,14 @@ def user_register(request):
 	return render(request, 'register.html', context)
 
 def user_logout(request):
-    logout(request)
-    return redirect('login')
+	logout(request)
+	return redirect('login')
 
 def list(request):
 	if not request.user.is_authenticated:
 		return redirect('login')
 	object_list = Show.objects.all()
-	object_list = object_list.order_by('publish_date', 'name')
+	object_list = object_list.order_by('publish_date', 'name', 'username')
 	query = request.GET.get('q')
 	if query:
 		object_list = object_list.filter(name__contains=query)
@@ -161,17 +161,37 @@ def detail(request, show_id):
 def create(request):
 	if not request.user.is_authenticated:
 		return redirect('login')
-	form = ShowForm()
-	if request.method == "POST":
-		form = ShowForm(request.POST, request.FILES or None)
-		if form.is_valid():
-			form.save()
-			return redirect("list")
+	form = ShowForm(request.POST or None, request.FILES or None)
+	if form.is_valid():
+		post = form.save(commit = False)
+		post.username = request.user
+		post.save()
+		# messages.success(request, "Successfully Created!")
+		return redirect("list")
 	context = {
 	"create_form":form,
 	}
 
 	return render(request, 'create.html', context)
+
+def edit_profile(request, profile_id):
+	if not request.user.is_authenticated:
+		return redirect('login')
+	if not (request.user.is_staff or request.user==Show.username):
+		return HttpResponse("you're not the username or the staff. You are not allowed to edit this post")
+	profile_obj = Profile.objects.get(id=profile_id)
+	form = ProfileForm(instance=profile_obj)
+	if request.method == "POST":
+		form = ProfileForm(request.POST, request.FILES or None, instance = profile_obj,)
+		if form.is_valid():
+			form.save()
+			return redirect("profile", profile_id=profile_obj.id)
+	context = {
+	"profile_obj":profile_obj,
+	"profile_form":form,
+
+	}
+	return render(request, 'edit_profile.html', context)
 
 
 

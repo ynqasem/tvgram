@@ -31,6 +31,7 @@ urlpatterns = [
     path('delete/<int:show_id>/', views.delete, name='delete'),
     path('like/<int:show_id>/', views.like, name='like'),
     path('create/', views.create, name="create"),
+    path('edit_profile/<int:profile_id>/', views.edit_profile, name="edit_profile"),
     path('following/<int:user_id>/', views.following, name='following'),
 
 ]

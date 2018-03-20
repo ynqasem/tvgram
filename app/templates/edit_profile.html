@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block name_me %}
+ Edit profile
+{% endblock name_me %}
+
+{% block stuff %}
+	<form action="{% url 'edit_profile' profile_id=profile_obj.id %}" method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{profile_form|crispy}}
+		<input type="submit" value="Update">
+	</form>
+{% endblock stuff %}
