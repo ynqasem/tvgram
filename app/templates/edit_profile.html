@@ -7,6 +7,9 @@
 {% endblock name_me %}
 
 {% block stuff %}
+
+<p> Edit your tvgram profile! </p>
+
 	<form action="{% url 'edit_profile' profile_id=profile_obj.id %}" method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{profile_form|crispy}}

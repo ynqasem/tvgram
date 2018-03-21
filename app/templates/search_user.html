@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block name_me %}
+Searching tvgram users page
+{% endblock name_me %}
+
+{% block stuff %}
+
+<p> Tvgrams Users Search Page...</p>
+
+<div class="row">
+<div class="card-columns">
+	{% for item in object_list %}
+	<div class="card">
+			{% if item.image %}
+				<img class="card-img-top" src="{{item.image.url}}" alt="Card image cap">
+			{% endif %}
+			<div class="card-body">
+				<a href="{% url 'profile' profile_id=item.id %}">
+					<button type="button" class="btn btn-primary btn-lg btn-block"><h5 class="card-title">Username: {{item.user}}</h5></button>
+				</a>
+					<button type="button" class="btn btn-secondary btn-lg btn-block"><p class="card-text">First Name: {{item.first_name}}</p></button>
+					<p class="card-text"><small class="text-muted">Last name: {{item.last_name}})</small></p>
+					<p class="card-text"><small class="text-muted"> Date of Birth: {{item.dob}}</small></p>
+					<p class="card-text"><small class="text-muted"> About: {{item.about}}</small></p>
+
+
+					{# <button type="button" class="btn btn-info" onclick="somefunction2({{user.id}})">
+						<span id="heart-number-{{user.id}}">{{user.following_set.count}}</span>
+						<i id="heart-color-{{user.id}}" class="fas fa-heart {% if item in my_following %}text-danger{% endif %}"></i>
+
+
+					</button>
+					
+
+
+
+
+					<button class="btn btn-secondary" onclick="somefunction({{item.id}})">
+						<span id="follow-number-{{item.id}}">{{item.following_set.count}}</span>
+						<i id="follow-color-{{item.id}}" class="fas fa-heart {% if item in my_likes %}text-danger{% endif %}"></i>
+
+
+					</button>
+					<a href="{% url 'delete' show_id=item.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
+					<a href="{% url 'update' show_id=item.id %}"><button type="button" class="btn btn-warning">Update</button></a> #}
+
+
+				</div>
+			</div>
+			
+			{% endfor %}
+		</div>
+	</div>
+
+{% endblock stuff %}
+
+

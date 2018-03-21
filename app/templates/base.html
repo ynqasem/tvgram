@@ -29,7 +29,10 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">My profile <span class="sr-only">(current)</span></a>
+        {% if request.user.is_authenticated %}
+
+        <a class="nav-link" href="{% url 'profile' profile_id=request.user.id  %}">My profile <span class="sr-only">(current)</span></a>
+        {% endif %}
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">My Feed-page</a>
@@ -61,9 +64,9 @@
       </li>
       {% endif %}
     </ul>
-    <form action="{% url 'list' %}" method="GET">
+    <form action="{% url 'usersearch' %}" method="GET">
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Search for shows..." aria-label="Search" name="q">
+    <input type="text" class="form-control" placeholder="Search for a username..." aria-label="Search" name="q">
     <div class="input-group-append">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       {# <input type="submit" class="input-group-text" value="Search"> #}

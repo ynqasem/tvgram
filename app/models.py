@@ -20,11 +20,11 @@ class Like(models.Model):
 	show = models.ForeignKey(Show, on_delete=models.CASCADE)
 
 class Profile(models.Model):
-    username = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(null=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    dob = models.DateField(auto_now=False, auto_now_add=False)
+    dob = models.DateField(auto_now=False, auto_now_add=False, null=True)
     about = models.CharField(max_length=500)
     
     # following = models.ForeignKey(User, on_delete=models.CASCADE)

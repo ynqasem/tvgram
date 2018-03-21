@@ -31,9 +31,11 @@ urlpatterns = [
     path('delete/<int:show_id>/', views.delete, name='delete'),
     path('like/<int:show_id>/', views.like, name='like'),
     path('create/', views.create, name="create"),
+    # path('create_profile/', views.create_profile, name="create_profile"),
     path('edit_profile/<int:profile_id>/', views.edit_profile, name="edit_profile"),
     path('following/<int:user_id>/', views.following, name='following'),
-
+    # path('profiles/home/', views.home, name='profilehome'),
+    path('search_user/', views.search_user, name='usersearch'),
 ]
 
 
