@@ -5,17 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from .models import Show, Like, Profile, Following, Followers, Posts
 
-def profile(request, profile_id):
-	profile_obj = Profile.objects.get(id=profile_id)
-	# items = Item.objects.filter(restaurant=profile_obj)
-	context = {
-	"profile_obj": profile_obj,
-	# "items": items
 
-	}
-
-
-	return render(request, 'profile.html', context)
 
 def following(request, user_id):
 	following_list = User.objects.get(id=user_id)
@@ -72,22 +62,6 @@ def user_login(request):
 	}
 	return render(request, 'login.html', context)
 
-def user_register(request):
-	form = UserRegisterForm()
-	if request.method == "POST":
-		form = UserRegisterForm(request.POST)
-		if form.is_valid():
-			person = form.save(commit=False)
-			person.set_password(person.password)
-			person.save()
-			my_username = form.cleaned_data['username']
-			my_password = form.cleaned_data['password']
-			login(request, person)
-			return redirect("list")
-	context = {
-		"form": form
-	}
-	return render(request, 'register.html', context)
 
 def user_logout(request):
 	logout(request)
@@ -174,11 +148,22 @@ def create(request):
 
 	return render(request, 'create.html', context)
 
+def profile(request, profile_id):
+	profile_obj = Profile.objects.get(id=profile_id)
+	# items = Item.objects.filter(restaurant=profile_obj)
+	context = {
+	"profile_obj": profile_obj,
+	# "items": items
+
+	}
+
+	return render(request, 'profile.html', context)
+
 def edit_profile(request, profile_id):
 	if not request.user.is_authenticated:
 		return redirect('login')
 	if not (request.user.is_staff or request.user==Show.username):
-		return HttpResponse("you're not the username or the staff. You are not allowed to edit this post")
+		return HttpResponse("you're not the username or the staff. You are not allowed to edit this profile")
 	profile_obj = Profile.objects.get(id=profile_id)
 	form = ProfileForm(instance=profile_obj)
 	if request.method == "POST":
@@ -193,5 +178,21 @@ def edit_profile(request, profile_id):
 	}
 	return render(request, 'edit_profile.html', context)
 
+def user_register(request):
+	form = UserRegisterForm()
+	if request.method == "POST":
+		form = UserRegisterForm(request.POST)
+		if form.is_valid():
+			person = form.save(commit=False)
+			person.set_password(person.password)
+			person.save()
+			my_username = form.cleaned_data['username']
+			my_password = form.cleaned_data['password']
+			login(request, person)
+			return redirect('list')
+	context = {
+		"form": form
+	}
+	return render(request, 'register.html', context)
 
 

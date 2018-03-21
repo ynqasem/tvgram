@@ -22,7 +22,8 @@
     <p class="card-text">Date of Birth: {{profile_obj.dob}}</p>
     <p class="card-text">About: {{profile_obj.about}}</p>
    
-    <a href="{% url 'edit_profile' profile_id=profile_obj.id %}" class="btn btn-primary">Edit your profile</a>
+    <a href="{% url 'edit_profile' profile_id=profile_obj.id %}" class="btn btn-dark">Edit your profile</a>
+    <a href="{% url 'create' %}" class="btn btn-info">create a tvgram post!</a>
   	</div>
 	</div>
 
