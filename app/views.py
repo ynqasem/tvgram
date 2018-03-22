@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from .forms import ShowForm, UserRegisterForm, LoginForm, ProfileForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from .models import Show, Like, Profile
+from .models import Show, Like, Profile, Contact
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -29,9 +29,9 @@ def like(request, show_id):
 	return JsonResponse(context, safe=False)
 
 def contact(request, user_to_id):
-	user_to_obj = Contact.objects.get(id=user_to_id)
+	user_to_obj = Profile.objects.get(id=user_to_id)
 
-	follow_obj, created = Contact.objects.get_or_create(user_from=request.user, user_to=user_to_obj)
+	follow_obj, created = Contact.objects.get_or_create(user_from=request.user, user_to=user_to_obj.user)
 
 	if created:
 		action="follow"
@@ -39,7 +39,7 @@ def contact(request, user_to_id):
 		action="unfollow"
 		follow_obj.delete()
 
-	follow_count = user_to_obj.rel_to_set.all().count()
+	follow_count = user_to_obj.user.rel_to_set.all().count()
 
 	context = {
 	"action": action,

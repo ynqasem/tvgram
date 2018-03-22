@@ -30,7 +30,7 @@ Searching tvgram users page
 
 					<button class="btn btn-secondary" onclick="followfunction({{item.id}})">
 						<span id="follow-number-{{item.id}}">{{item.rel_to_set.count}}</span>
-						<i id="star-color-{{item.id}}" class="fas fa-star {% if item in my_following %}text-danger{% endif %}"></i>
+						<i id="follow-color-{{item.id}}" class="fas fa-star {% if item in my_following %}text-danger{% endif %}"></i>
 					</button>
 
 
@@ -49,7 +49,7 @@ Searching tvgram users page
 			type:"GET",
 			url:"/contact/"+id,
 			error:function(){
-				console.log("You failed to do it.")
+				console.log("You failed to follow.")
 			},
 			success: function(data){
 				console.log(data);
