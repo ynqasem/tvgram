@@ -17,14 +17,16 @@
 			{% endif %}
   	<div class="card-body">
     <h5 class="card-title">Username: {{profile_obj.username}}</h5>
-    <p class="card-text">First name: {{profile_obj.user.first_name}}</p>
-    <p class="card-text">Last name: {{profile_obj.user.last_name}}</p>
+    <p class="card-text">First name: {{profile_obj.first_name}}</p>
+    <p class="card-text">Last name: {{profile_obj.last_name}}</p>
     <p class="card-text">Date of Birth: {{profile_obj.dob}}</p>
     <p class="card-text">About: {{profile_obj.about}}</p>
    
     <a href="{% url 'edit_profile' profile_id=profile_obj.id %}" class="btn btn-dark">Edit your profile</a>
     <a href="{% url 'create' %}" class="btn btn-info">create a tvgram post!</a>
-    {# <a id="follow-color-{{item.id}}" , href="{% url 'follow' %}" class="btn btn-info">Follow!</a> #}
+
+
+
 	</div>
 
 	<br>

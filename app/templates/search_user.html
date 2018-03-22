@@ -28,6 +28,12 @@ Searching tvgram users page
 
 					<a href="{% url 'update' show_id=item.id %}"><button type="button" class="btn btn-info">Unfollow</button></a>
 
+					<button class="btn btn-secondary" onclick="followfunction({{item.id}})">
+						<span id="follow-number-{{item.id}}">{{item.rel_to_set.count}}</span>
+						<i id="star-color-{{item.id}}" class="fas fa-star {% if item in my_following %}text-danger{% endif %}"></i>
+					</button>
+
+
 
 				</div>
 			</div>
@@ -35,6 +41,30 @@ Searching tvgram users page
 			{% endfor %}
 		</div>
 	</div>
+
+<script>
+
+	function followfunction(id){
+		$.ajax({
+			type:"GET",
+			url:"/contact/"+id,
+			error:function(){
+				console.log("You failed to do it.")
+			},
+			success: function(data){
+				console.log(data);
+				$("#follow-number-"+id).text(data.count);
+				if(data.action==="follow"){
+					$("#follow-color-"+id).addClass("text-danger");
+				}
+				else{
+					$("#follow-color-"+id).removeClass("text-danger");
+				}
+			}
+		})
+	}
+</script>
+
 
 {% endblock stuff %}
 

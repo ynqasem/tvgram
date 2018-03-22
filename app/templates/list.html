@@ -41,12 +41,6 @@ Tv home feed
 					</button>
 
 
-{# 
-					<button class="btn btn-secondary" onclick="otherfunction({{item.id}})">
-						<span id="follow-number-{{item.id}}">{{item.follow_set.count}}</span>
-						<i id="follow-color-{{item.id}}" class="fas fa-heart {% if item in my_following %}text-danger{% endif %}"></i>
-					</button> #}
-
 
 
 					<a href="{% url 'delete' show_id=item.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
@@ -83,28 +77,6 @@ Tv home feed
 	}
 </script>
 
-<script>
-
-	// function otherfunction(id){
-	// 	$.ajax({
-	// 		type:"GET",
-	// 		url:"/follow/"+id,
-	// 		error:function(){
-	// 			console.log("You failed to do it.")
-	// 		},
-	// 		success: function(data){
-	// 			console.log(data);
-	// 			$("#follow-number-"+id).text(data.count);
-	// 			if(data.action==="following"){
-	// 				$("#follow-color-"+id).addClass("text-danger");
-	// 			}
-	// 			else{
-	// 				$("#follow-color-"+id).removeClass("text-danger");
-	// 			}
-	// 		}
-	// 	})
-	// }
-</script>
 
 
 {% endblock stuff %}

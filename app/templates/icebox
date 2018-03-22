@@ -1,0 +1,15 @@
+{# 
+    <a href="{% url 'contact' user_to_id=follow_obj.id %}" class="btn btn-info">Follow!</a> #}
+
+    {#  <div class="message-section" style="display:none;"></div>
+    {% for count in follow_count %}
+        <button data-url="{% url 'contact' user_to_id=count.id %}"
+                class="follow-button" type="button">Follow</button>
+    {% endfor %}
+ #}
+{# 
+    <button class="btn btn-secondary" onclick="followfunction({{count.id}})">
+						<span id="star-number-{{item.id}}">{{count.contact_set.count}}</span>
+						<i id="star-color-{{item.id}}" class="fas fa-star {% if count in following_list %}text-danger{% endif %}"></i>
+					</button>
+ #}

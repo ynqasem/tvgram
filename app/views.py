@@ -8,11 +8,6 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-# @login_required
-# def home(request):
-#     return HttpResponseRedirect(reverse("edit_profile", args=[request.user.profile.id]))
-
-
 
 def like(request, show_id):
 	show_obj = Show.objects.get(id=show_id)
@@ -33,9 +28,28 @@ def like(request, show_id):
 	}
 	return JsonResponse(context, safe=False)
 
+def contact(request, user_to_id):
+	user_to_obj = Contact.objects.get(id=user_to_id)
 
-# def follow(request, profile_id):
-#     follow_obj = Profile.objects.get(id=profile_id)
+	follow_obj, created = Contact.objects.get_or_create(user_from=request.user, user_to=user_to_obj)
+
+	if created:
+		action="follow"
+	else:
+		action="unfollow"
+		follow_obj.delete()
+
+	follow_count = user_to_obj.rel_to_set.all().count()
+
+	context = {
+	"action": action,
+	"count": follow_count
+	}
+	return JsonResponse(context, safe=False)
+
+
+# def follow(request, follow_id):
+#     follow_obj = Profile.objects.get(id=follow_id)
 
 #     follow_obj, created = Follow.objects.get_or_create(user=request.user, followers=follow_obj)
 
@@ -175,8 +189,10 @@ def create(request):
 def profile(request, profile_id):
 	profile = Profile.objects.get(user=User.objects.get(id=profile_id))
 	profile_obj = Profile.objects.get(id=profile_id)
+	following_list = []
 	context = {
 	"profile_obj": profile_obj,
+	"following_list": following_list
 
 	}
 
@@ -220,13 +236,25 @@ def user_register(request):
 	return render(request, 'register.html', context)
 
 def search_user(request):
+	if not request.user.is_authenticated:
+		return redirect('login')
+
 	object_list = Profile.objects.all()
 	object_list = object_list.order_by('user')
 	query = request.GET.get('q')
 	if query:
 		object_list = object_list.filter(user__username__contains=query)
+
+	follow_list = []
+	# following_list = []
+	follows = request.user.rel_to_set.all()
+	for follow in follows:
+		follow_list.append(follow.user_to)
+
 	context = {
-	"object_list":object_list
+	"object_list":object_list,
+	"my_following": follow_list
+
 	}
 	return render(request, 'search_user.html', context)
 	

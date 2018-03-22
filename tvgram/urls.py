@@ -35,8 +35,10 @@ urlpatterns = [
     path('edit_profile/<int:profile_id>/', views.edit_profile, name="edit_profile"),
     # path('profiles/home/', views.home, name='profilehome'),
     path('search_user/', views.search_user, name='usersearch'),
-    # path('follow/<int:profile_id>/', views.follow, name='follow'),
+    # path('follow/<int:follow_id>/', views.follow, name='follow'),
+    path('contact/<int:user_to_id>/', views.contact, name='contact'),
 ]
+
 
 
 if settings.DEBUG:
