@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from .forms import ShowForm, UserRegisterForm, LoginForm, ProfileForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from .models import Show, Like, Profile, Following, Followers, Posts
+from .models import Show, Like, Profile
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -12,25 +12,6 @@ from django.contrib.auth.models import User
 # def home(request):
 #     return HttpResponseRedirect(reverse("edit_profile", args=[request.user.profile.id]))
 
-
-def following(request, user_id):
-	following_list = User.objects.get(id=user_id)
-
-	following_obj, created = User.objects.get_or_create(user=request.user, followed_user=following_list)
-
-	if created:
-		action="follow"
-	else:
-		action="unfollow"
-		following_obj.delete()
-
-	following_count = following_list.following_set.all().count()
-
-	context = {
-	"action": action,
-	"count": following_count
-	}
-	return JsonResponse(context, safe=False)
 
 
 def like(request, show_id):
@@ -51,6 +32,26 @@ def like(request, show_id):
 	"count": like_count
 	}
 	return JsonResponse(context, safe=False)
+
+
+# def follow(request, profile_id):
+#     follow_obj = Profile.objects.get(id=profile_id)
+
+#     follow_obj, created = Follow.objects.get_or_create(user=request.user, followers=follow_obj)
+
+#     if created:
+#         action="follow"
+#     else:
+#         action="unfollow"
+#         like_obj.delete()
+
+#     follow_count = follow_obj.follow_set.all().count()
+
+#     context = {
+#     "action": action,
+#     "count": follow_count
+#     }
+#     return JsonResponse(context, safe=False)
 
 def user_login(request):
 	form = LoginForm()
@@ -73,7 +74,7 @@ def user_logout(request):
 	logout(request)
 	return redirect('login')
 
-def list(request, ):
+def list(request):
 	if not request.user.is_authenticated:
 		return redirect('login')
 
@@ -85,14 +86,14 @@ def list(request, ):
 	
 
 	liked_shows = []
-	following_list = []
+	# following_list = []
 	likes = request.user.like_set.all()
 	for like in likes:
 		liked_shows.append(like.show)
 	context = {
 	"shows": object_list,
 	"my_likes": liked_shows,
-	"my_following": following_list,
+	# "my_following": following_list,
 
 
 	}
@@ -152,6 +153,8 @@ def create(request):
 	}
 
 	return render(request, 'create.html', context)
+
+
 
 
 # def create_profile(request):
@@ -215,6 +218,7 @@ def user_register(request):
 		"form": form
 	}
 	return render(request, 'register.html', context)
+
 def search_user(request):
 	object_list = Profile.objects.all()
 	object_list = object_list.order_by('user')

@@ -27,19 +27,10 @@ class Profile(models.Model):
     dob = models.DateField(auto_now=False, auto_now_add=False, null=True)
     about = models.CharField(max_length=500)
     
-    # following = models.ForeignKey(User, on_delete=models.CASCADE)
-    # followers = models.ForeignKey(User, on_delete=models.CASCADE)
-    # posts = models.ForiegnKey(User, on_delete=models.CASCADE)
+# class Follow(models.Model):
+#     following = models.ForeignKey(User, related_name="sheep", on_delete=models.CASCADE)
+#     followers = models.ForeignKey(User, related_name="shephard", on_delete=models.CASCADE)
 
 
-class Following(models.Model):
-	user = models.ForeignKey(User,related_name="followers", on_delete=models.CASCADE)
-	followed_user = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)
-
-class Followers(models.Model):
-	user = models.ForeignKey(User,related_name="followers2", on_delete=models.CASCADE)
-
-class Posts(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 

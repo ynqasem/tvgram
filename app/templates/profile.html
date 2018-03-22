@@ -24,7 +24,7 @@
    
     <a href="{% url 'edit_profile' profile_id=profile_obj.id %}" class="btn btn-dark">Edit your profile</a>
     <a href="{% url 'create' %}" class="btn btn-info">create a tvgram post!</a>
-  	</div>
+    {# <a id="follow-color-{{item.id}}" , href="{% url 'follow' %}" class="btn btn-info">Follow!</a> #}
 	</div>
 
 	<br>
@@ -41,6 +41,27 @@
   {% endfor %}
 </ul> #}
 	
+<script>
 
+    function somefunction(id){
+        $.ajax({
+            type:"GET",
+            url:"/follow/"+id,
+            error:function(){
+                console.log("You failed to do it.")
+            },
+            success: function(data){
+                console.log(data);
+                $("#follow-number-"+id).text(data.count);
+                if(data.action==="follow"){
+                    $("#follow-color-"+id).addClass("text-danger");
+                }
+                else{
+                    $("#follow-color-"+id).removeClass("text-danger");
+                }
+            }
+        })
+    }
+</script>
 
 {% endblock stuff %}

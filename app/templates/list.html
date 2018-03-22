@@ -29,30 +29,26 @@ Tv home feed
 			{% endif %}
 			<div class="card-body">
 				<a href="{% url 'detail' show_id=item.id %}">
-					<button type="button" class="btn btn-primary btn-lg btn-block"><h5 class="card-title">{{item.name}}</h5></button>
+					<button type="button" class="btn btn-dark btn-lg btn-block"><h5 class="card-title">{{item.name}}</h5></button>
 				</a>
-					<button type="button" class="btn btn-secondary btn-lg btn-block"><p class="card-text">{{item.description}}</p></button>
+					<button type="button" class="btn btn-light btn-lg btn-block"><p class="card-text">{{item.description}}</p></button>
 					<p class="card-text"><small class="text-muted">Rating: (5/{{item.rating}})</small></p>
 					<p class="card-text"><small class="text-muted">Publish date: {{item.publish_date}}</small></p>
 
-
-					<button type="button" class="btn btn-info" onclick="somefunction2({{user.id}})">
-						<span id="heart-number-{{user.id}}">{{user.following_set.count}}</span>
-						<i id="heart-color-{{user.id}}" class="fas fa-heart {% if item in my_following %}text-danger{% endif %}"></i>
-
-
-					</button>
-					
-
-
-
-
 					<button class="btn btn-secondary" onclick="somefunction({{item.id}})">
-						<span id="follow-number-{{item.id}}">{{item.following_set.count}}</span>
-						<i id="follow-color-{{item.id}}" class="fas fa-heart {% if item in my_likes %}text-danger{% endif %}"></i>
-
-
+						<span id="heart-number-{{item.id}}">{{item.like_set.count}}</span>
+						<i id="heart-color-{{item.id}}" class="fas fa-heart {% if item in my_likes %}text-danger{% endif %}"></i>
 					</button>
+
+
+{# 
+					<button class="btn btn-secondary" onclick="otherfunction({{item.id}})">
+						<span id="follow-number-{{item.id}}">{{item.follow_set.count}}</span>
+						<i id="follow-color-{{item.id}}" class="fas fa-heart {% if item in my_following %}text-danger{% endif %}"></i>
+					</button> #}
+
+
+
 					<a href="{% url 'delete' show_id=item.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
 					<a href="{% url 'update' show_id=item.id %}"><button type="button" class="btn btn-warning">Update</button></a>
 
@@ -64,28 +60,6 @@ Tv home feed
 		</div>
 	</div>
 
-<script>
-
-	function somefunction2(id){
-		$.ajax({
-			type:"GET",
-			url:"/following/"+id,
-			error:function(){
-				console.log("You failed to do it.")
-			},
-			success: function(data){
-				console.log(data);
-				$("#follow-number-"+id).text(data.count);
-				if(data.action==="following"){
-					$("#follow-color-"+id).addClass("text-danger");
-				}
-				else{
-					$("#follow-color-"+id).removeClass("text-danger");
-				}
-			}
-		})
-	}
-</script>
 <script>
 
 	function somefunction(id){
@@ -108,6 +82,31 @@ Tv home feed
 		})
 	}
 </script>
+
+<script>
+
+	// function otherfunction(id){
+	// 	$.ajax({
+	// 		type:"GET",
+	// 		url:"/follow/"+id,
+	// 		error:function(){
+	// 			console.log("You failed to do it.")
+	// 		},
+	// 		success: function(data){
+	// 			console.log(data);
+	// 			$("#follow-number-"+id).text(data.count);
+	// 			if(data.action==="following"){
+	// 				$("#follow-color-"+id).addClass("text-danger");
+	// 			}
+	// 			else{
+	// 				$("#follow-color-"+id).removeClass("text-danger");
+	// 			}
+	// 		}
+	// 	})
+	// }
+</script>
+
+
 {% endblock stuff %}
 
 
